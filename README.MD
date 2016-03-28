@@ -16,17 +16,20 @@ So instead we do the following chain of events
 
 2. You send a request to `CircleCI` to find the latest build number
 
-3. Using that build number you then proxy the artifacts associated with that build number
+3. Using that build number you then find the artifacts associated with that build number
 
-4. You filter out which file you're looking for and find the corresponding full URL 
+4. You filter out which file you're looking for and find the corresponding absolute URL 
 
-5. You proxy *that* URL back path to the requester
+5. Finally, you proxy **that** URL path back to the requester
 
 ---
 
 See it running here:
 
 http://testreports.uoitdclibrarybooking.objectivetruth.ca/
+
+Does a bunch of complicated calls when requests comes in, but looks like my cool domain 
+from the outside :neckbeard:
 
 ## License
 
