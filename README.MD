@@ -31,6 +31,25 @@ http://testreports.uoitdclibrarybooking.objectivetruth.ca/
 Does a bunch of complicated calls when requests comes in, but looks like my cool domain 
 from the outside :neckbeard:
 
+## Installation Instructions
+
+Must have [Nodejs/NPM installed](https://nodejs.org/en/download/package-manager/)
+
+All commands must be run from the project root folder after [cloning](https://help.github.com/articles/cloning-a-repository/)
+
+1. Install dependancies
+
+  `npm install`
+
+2. Run `server.js`
+
+  `node server.js`
+
+3. :question::question::question::question:
+
+4. Profit
+
+
 ## License
 
 MIT
