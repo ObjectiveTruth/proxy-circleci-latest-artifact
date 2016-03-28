@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "http-proxy": "~1.13.2"
+    "http-proxy": "~1.13.2",
+    "lodash": "~4.6.1",
+    "request-promise": "~2.0.1"
   },
   "devDependencies": {},
   "scripts": {
