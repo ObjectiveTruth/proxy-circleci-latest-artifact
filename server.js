@@ -19,25 +19,35 @@ var CIRCL_CI_URI = 'https://circleci.com/api/v1/project/ObjectiveTruth/UoitDCLib
 function getArtifactsUsingBuildNum(buildNum) {
     return 'https://circleci.com/api/v1/project/ObjectiveTruth/UoitDCLibraryBooking/' + buildNum + '/artifacts';
 }
+var latestStableLinkToProxy;
 
 var server = http.createServer(function(req, res) {
         console.log('Got a request looking for ' + req.url);
+        if (req.url === '/') {req.url = '/index.html';}
     rp({
         uri: CIRCL_CI_URI,
         json: true
     }).then(function(response) {
         console.log('Went to ' + CIRCL_CI_URI + ' and got this response');
-        var latestBuildNum = response[1].build_num
-        rp({uri: getArtifactsUsingBuildNum(latestBuildNum), json: true}).then(function(result) {
-            var artifactObject = _.find(result, function(o) {return _.endsWith(o.url, 'index.html');});
-var artifactUrl = artifactObject.url.replace('index.html', '');
-            console.log('Going to proxy ' + artifactUrl);
-            if (req.url === '/') {req.url = '/index.html';}
-            proxy.web(req, res, { target: artifactUrl });
-            //res.end(artifactUrl.url);
-        }, function(error) {
-            res.end('Something aint right');
-        });
+        if (response[0].status === 'running' || !response[0].has_artifacts) {
+            if(!latestStableLinkToProxy) {
+                res.end('No stable builds as yet')
+            } else {
+                proxy.web(req, res, { target: latestStableLinkToProxy });
+            }
+        }else {
+            var latestBuildNum = response[0].build_num
+            rp({uri: getArtifactsUsingBuildNum(latestBuildNum), json: true}).then(function(result) {
+                var artifactObject = _.find(result, function(o) {return _.endsWith(o.url, 'index.html');});
+                var artifactUrl = artifactObject.url.replace('index.html', '');
+                console.log('Going to proxy ' + artifactUrl);
+                latestStableLinkToProxy = artifactUrl
+                proxy.web(req, res, { target: artifactUrl });
+                //res.end(artifactUrl.url);
+            }, function(error) {
+                res.end('Something aint right');
+            });
+        }
     }, function(error) {
         res.end('Something aint right');
     });
