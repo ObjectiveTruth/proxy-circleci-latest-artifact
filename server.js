@@ -42,7 +42,7 @@ var server = http.createServer(function(req, res) {
                 var artifactUrl = artifactObject.url.replace('index.html', '');
                 console.log('Going to proxy ' + artifactUrl);
                 latestStableLinkToProxy = artifactUrl
-                proxy.web(req, res, { target: artifactUrl });
+                proxy.web(req, res, { target: artifactUrl, secure: false });
                 //res.end(artifactUrl.url);
             }, function(error) {
                 res.end('Something aint right');
